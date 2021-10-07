@@ -23,7 +23,7 @@ They’re releasing a new application that can be integrated with the customer�
 4. The catering system is automatically restocked each time the application runs.
 5. When the customer selects ​(1) Display Catering Items, their information  is shown.
     - Each catering product has a product code identifier, name, purchase price, and quantity.
-    - Each item in the catering system has enough room for 50 of that product.
+    - Each item in the catering system has enough room for 25 of that product.
     - Every product is initially stocked to the maximum amount.
     - A product which has run out should indicate it is SOLD OUT, otherwise it should display the quantity remaining.
 6. When the customer selects (2) Order they are guided through the purchase menu:
@@ -37,9 +37,9 @@ They’re releasing a new application that can be integrated with the customer�
    Selecting any items from the purchase menu except (3) returns to the purchase menu. Selecting 3 from the purchase menu returns to the main menu.
 
 7. The purchase process flow is as follows
-  - Selecting (1) Add Money ​A customer can repeatedly feed money into their account in any whole dollar amounts up to $5000 (e.g. $1, $3, $5, $15, $20, $100, $2918, etc.)
-    - The Current Account Balance should not be able to exceed $5000 at any time
-    - Customers should be able to add money multiple times so they can replenish their balance at any time, provided they never go above $5000. 
+  - Selecting (1) Add Money ​A customer can repeatedly feed money into their account in any whole dollar amounts up to $4200 (e.g. $1, $3, $5, $15, $20, $100, $2918, etc.)
+    - The Current Account Balance should not be able to exceed $4200 at any time
+    - Customers should be able to add money multiple times so they can replenish their balance at any time, provided they never go above $4200. 
     - The Current Account Balance indicates how much money the customer has available in their account.
   - Selecting ​(2) Select Product ​allows the customer to select a product and mark it as purchased.
       - If the product code does not exist, the customer is informed and returned to the Purchase menu.
@@ -102,13 +102,13 @@ separate product in the file and follows the below format.
 **<span style="text-decoration:underline;">Columns:</span>**
 
 ```
-Code|Name|Price|Type
+Type|Code|Name|Price
 ```
 
+*   **Product Type:** The type of the item:  B (beverage), E (entree), (A) appetizer, (D) dessert.
 *   **Product Code:**  The product code used to identify the product when ordering.
 *   **Product Name:** The display name of the catering system product.
 *   **Price:** The purchase price for the product.
-*   **Product Type:** The type of the item:  B (beverage), E (entree), (A) appetizer, (D) dessert.
 
 An example input file has been provided in your repository.  This input file is an example of what an inventory file will look like and while it should be used for development, it may not be the final file used with the system when released.  
 
