@@ -6,5 +6,6 @@ namespace Capstone.Classes
 {
     public class FileOutput
     {
+        public string outputPath = @"C:\Catering\FILENAME";
     }
 }

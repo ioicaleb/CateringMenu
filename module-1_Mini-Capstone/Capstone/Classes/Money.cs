@@ -12,12 +12,20 @@ namespace Capstone.Classes
 
         public decimal AccountLimit { get; } = 4200.00M;
 
-
+        /// <summary>
+        /// Returns the current account balance
+        /// </summary>
+        /// <returns></returns>
         public decimal CheckBalance()
         {
             return AccountBalance;
         }
 
+        /// <summary>
+        /// Checks if transaction will exceed account limit and completes transaction if it does not
+        /// </summary>
+        /// <param name="money"></param>
+        /// <returns></returns>
         public bool AddMoney(int money)
         {
             if ((AccountBalance + money) <= AccountLimit)
@@ -28,7 +36,11 @@ namespace Capstone.Classes
             return false;
         }
 
-
+        /// <summary>
+        /// Checks if transaction will overdraft account and completes transaction if it does not
+        /// </summary>
+        /// <param name="money"></param>
+        /// <returns></returns>
         public bool RemoveMoney(decimal money)
         {
             if ((AccountBalance - money) >= 0)
@@ -37,11 +49,6 @@ namespace Capstone.Classes
                 return true;
             }
             return false;
-        }
-
-        public override string ToString()
-        {
-            return $"{AccountBalance.ToString("C")}";
         }
     }
 }

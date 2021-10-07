@@ -14,13 +14,22 @@ namespace Capstone.Classes
         public Money Money = new Money();
 
         public List<Transaction> TransactionLog = new List<Transaction>();
-
+        
+        /// <summary>
+        ///Reads from file and creates a list of products 
+        /// </summary>
         public void ProductListBuilder()
         {
             FileInput fileInput = new FileInput();
-            fileInput.FileLoader(items);
+            fileInput.FileLoader(items); //converts list to products
         }
 
+        /// <summary>
+        /// Creates and adds a transaction to a list of transactions
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="amount"></param>
+        /// <param name="balance"></param>
         public void LogTransaction(string type, decimal amount, decimal balance)
         {
             Transaction tx = new Transaction(type, amount, balance);
