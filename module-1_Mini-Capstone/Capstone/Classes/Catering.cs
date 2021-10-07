@@ -10,8 +10,26 @@ namespace Capstone.Classes
     public class Catering
     {
         private List<CateringItem> items = new List<CateringItem>();
-        
 
-   
+        public Money Money = new Money();
+
+        public List<Transaction> TransactionLog = new List<Transaction>();
+
+        public void ProductListBuilder()
+        {
+            FileInput fileInput = new FileInput();
+            fileInput.FileLoader(items);
+        }
+
+        public void LogTransaction(string type, decimal amount, decimal balance)
+        {
+            Transaction tx = new Transaction(type, amount, balance);
+            TransactionLog.Add(tx);
+        }
+
+        public CateringItem[] itemsList
+        {
+            get { return items.ToArray(); }
+        }
     }
 }

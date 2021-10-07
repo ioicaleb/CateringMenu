@@ -9,6 +9,35 @@ namespace Capstone.Classes
     /// </summary>
     public class CateringItem
     {
+        public string Type { get; }
 
+        public string Id { get; }
+
+        public string Name { get; }
+
+        public int Quantity { get; set; }
+
+        public decimal Price { get; }
+
+        public CateringItem(string type, string id, string name, decimal price)
+        {
+            Type = type;
+            Id = id;
+            Name = name;
+            Quantity = 25;
+            Price = price;
+        }
+
+
+
+        public override string ToString()
+        {
+            string details = $"{Type} {Name} {Quantity} {Price.ToString("C")}";
+            if (Quantity == 0)
+            {
+                details += " SOLD OUT";
+            }
+            return details;
+        }
     }
 }
