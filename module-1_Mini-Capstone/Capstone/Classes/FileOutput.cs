@@ -7,16 +7,17 @@ namespace Capstone.Classes
 {
     public class FileOutput
     {
+        public string txLogOutputPath = @"C:\Catering\Log.txt";
+        public string salesReportPath = @"C:\Catering\TotalSales.rpt";
         /// <summary>
         /// Writes Transaction Log to file Log.txt
         /// </summary>
         /// <param name="transactions"></param>
-        public void WriteToLog(List<Transaction> transactions)
+        public void GenerateTxLogFile(List<Transaction> transactions)
         {
-            string outputPath = @"C:\Catering\Log.txt";
             try
             {
-                using (StreamWriter writer = new StreamWriter(outputPath, false))
+                using (StreamWriter writer = new StreamWriter(txLogOutputPath, false))
                 {
                     foreach (Transaction item in transactions)
                     {
@@ -39,7 +40,7 @@ namespace Capstone.Classes
         {
             try
             {
-                using (StreamWriter writer = new StreamWriter(@"C:\Catering\TotalSales.rpt", false))
+                using (StreamWriter writer = new StreamWriter(salesReportPath, false))
                 {
                     decimal totalSalesCost = 0;
                     foreach (KeyValuePair<string, Order> order in OrderHistory)

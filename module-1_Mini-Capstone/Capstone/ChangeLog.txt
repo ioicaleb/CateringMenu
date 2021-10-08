@@ -1,0 +1,9 @@
+﻿1.  Moved all path strings into fields and moved to the tops of the file classes
+		One was already doing this.  Just made them consistant & easier to maintain.
+
+2.  Changed various fields throughout the program to names that better tell what they are.
+
+3.  Rearranged the object declarations at the top of the catering class to be more consistant.
+		(put class declarations with class declarations & collections with collections)
+
+4.  

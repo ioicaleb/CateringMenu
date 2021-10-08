@@ -9,32 +9,30 @@ namespace Capstone.Classes
     /// </summary>
     public class Catering
     {
-        public Dictionary<string, CateringItem> productMenu = new Dictionary<string, CateringItem>();
 
-        public Money Money = new Money();
+        public  Money Money = new Money();
+        private FileInput fileInput = new FileInput();
+        private FileOutput fileOutput = new FileOutput();
 
-        // Log of all transactions. Add$, order item, & return$
+
+        public Dictionary<string, CateringItem> ProductMenu = new Dictionary<string, CateringItem>();
         public List<Transaction> TransactionLog = new List<Transaction>();
-
-        // Track orders made across all transactions
         public Dictionary<string, Order> OrderHistory = new Dictionary<string, Order>();
         
-        private FileInput fileInput = new FileInput();
 
-        private FileOutput fileOutput = new FileOutput();
 
         /// <summary>
         ///Reads from file and creates a list of products 
         /// </summary>
         public void ProductMenuBuilder()
         {
-            fileInput.LoadProductMenuFromFile(productMenu); //converts list to products
+            fileInput.LoadProductMenuFromFile(ProductMenu); //converts list to products
 
         }
 
-        public void FinalizeTransactions()
+        public void FinalizeTxLog()
         {
-            fileOutput.WriteToLog(TransactionLog); //Writes Transaction Log output file
+            fileOutput.GenerateTxLogFile(TransactionLog); //Writes Transaction Log output file
         }
 
         /// <summary>
@@ -46,7 +44,7 @@ namespace Capstone.Classes
         public bool PlaceOrder(string input, int quantityToOrder)
         {
             
-            CateringItem order = productMenu[input];
+            CateringItem order = ProductMenu[input];
             if ((order.Quantity >= quantityToOrder) && quantityToOrder >= 0) //Checks if the item is available and the amount requested is not negative
             {
                 decimal cost = quantityToOrder * order.Price;
@@ -54,10 +52,10 @@ namespace Capstone.Classes
                 {
                     Money.RemoveMoney(cost); //Removes cost from account balance
                     order.Quantity -= quantityToOrder; //Removes ordered items from item quantity 
-                    LogTransaction($"{quantityToOrder} {productMenu[input].Name} {productMenu[input].Id}", cost); //Adds transaction to Transaction Log
+                    LogTransaction($"{quantityToOrder} {ProductMenu[input].Name} {ProductMenu[input].Id}", cost); //Adds transaction to Transaction Log
                     
-                    decimal price = productMenu[input].Price;
-                    string name = productMenu[input].Name;
+                    decimal price = ProductMenu[input].Price;
+                    string name = ProductMenu[input].Name;
                     decimal orderCost = price * quantityToOrder;
 
                     if (OrderHistory.ContainsKey(input)) //If product has been ordered before, modifies the amount that has been ordered and total cost for that product

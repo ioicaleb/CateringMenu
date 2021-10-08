@@ -26,9 +26,9 @@ namespace Capstone.Classes
                 DisplayHeader("Main Menu", "1) Display Catering Items\n2) Order\n3) Quit");
                 Console.WriteLine();
                 Console.Write("What would you like to do?  ");
-                string input = Console.ReadLine();
+                string mainMenuChoice = Console.ReadLine();
                 Console.WriteLine();
-                switch (input)
+                switch (mainMenuChoice)
                 {
                     case "1": //Display available products, price, and quantity
                         DisplayCateringItems();
@@ -37,7 +37,7 @@ namespace Capstone.Classes
                         DisplayOrderMenu();
                         break;
                     case "3": //Quits program
-                        catering.FinalizeTransactions();
+                        catering.FinalizeTxLog();
                         done = true;
                         break;
                     case "4": //Displays Transaction Log in console (DOES NOT APPEAR IN LIST TO USER)
@@ -60,17 +60,17 @@ namespace Capstone.Classes
         /// <param name="options"></param>
         public void DisplayHeader(string header, string options)
         {
-                Console.WriteLine("Weyland, Inc.  Catering System");
+            Console.WriteLine("Weyland, Inc.  Catering System");
             if (header.Length < 30)
             {
-                int length = 15 - (header.Length/2);
-                for(int i=0; i < length; i++)
+                int length = 15 - (header.Length / 2);
+                for (int i = 0; i < length; i++)
                 {
                     header = " " + header;
                 }
             }
-                Console.WriteLine(header);
-                Console.WriteLine("******************************");
+            Console.WriteLine(header);
+            Console.WriteLine("******************************");
             if (options != "")
             {
                 Console.WriteLine(options);
@@ -84,7 +84,7 @@ namespace Capstone.Classes
         public void DisplayCateringItems()
         {
             DisplayHeader("Current Product Availability", "");
-            foreach (KeyValuePair<string, CateringItem> menuItem in catering.productMenu)
+            foreach (KeyValuePair<string, CateringItem> menuItem in catering.ProductMenu)
             {
                 Console.WriteLine(menuItem.Value);
             }
@@ -96,15 +96,15 @@ namespace Capstone.Classes
         /// </summary>
         public void DisplayOrderMenu()
         {
-            bool ordering = true;
-            while (ordering)
+            bool continueOrdering = true;
+            while (continueOrdering)
             {
                 DisplayHeader("Order Menu", "1) Add Money\n2) Select Products\n3) Complete Transaction");
 
                 Console.Write("What would you like to do?  ");
-                string input = Console.ReadLine();
+                string orderMenuChoice = Console.ReadLine();
                 Console.WriteLine();
-                switch (input)
+                switch (orderMenuChoice)
                 {
                     case "1": //Add Money and create transaction for transaction log
                         AddMoneyToAccount();
@@ -115,7 +115,7 @@ namespace Capstone.Classes
                         break;
                     case "3": //Complete transaction, output total sales report, and return to main menu
                         CompleteTransaction();
-                        ordering = false;
+                        continueOrdering = false;
                         break;
                     case "4": //Displays Transaction Log in console (DOES NOT APPEAR IN LIST TO USER)
                         foreach (Transaction item in catering.TransactionLog)
@@ -161,22 +161,21 @@ namespace Capstone.Classes
         {
             Console.WriteLine();
             Console.Write("What do you want to order?: ");
-            string input = Console.ReadLine().ToUpper();
-            // if (catering.productKey.ContainsKey(input))
-            if (catering.productMenu.ContainsKey(input))
+            string idFromUser = Console.ReadLine().ToUpper();
+            if (catering.ProductMenu.ContainsKey(idFromUser))
             {
-                int quantityAvailable = catering.productMenu[input].Quantity;
-                string name = catering.productMenu[input].Name;
-                decimal price = catering.productMenu[input].Price;
+                int quantityAvailable = catering.ProductMenu[idFromUser].Quantity;
+                string itemName = catering.ProductMenu[idFromUser].Name;
+                decimal price = catering.ProductMenu[idFromUser].Price;
 
                 Console.Write($"How many? (Available: {quantityAvailable}): ");
-                if (int.TryParse(Console.ReadLine(), out int quantityToOrder))
+                if (int.TryParse(Console.ReadLine(), out int qtyToOrder))
                 {
-                    bool orderPlaced = catering.PlaceOrder(input, quantityToOrder);
+                    bool wasOrderPlaced = catering.PlaceOrder(idFromUser, qtyToOrder);
                     Console.WriteLine();
-                    if (orderPlaced)
+                    if (wasOrderPlaced)
                     {
-                        string orderString = $"Order placed for {quantityToOrder} {name} Total Cost: {(price * quantityToOrder).ToString("C")}";
+                        string orderString = $"Order placed for {qtyToOrder} {itemName} Total Cost: {(price * qtyToOrder).ToString("C")}";
                         Console.WriteLine(orderString);
                     }
                     else
@@ -202,34 +201,36 @@ namespace Capstone.Classes
         /// </summary>
         public void CompleteTransaction()
         {
-            decimal orderTotal = 0;
+            decimal accumOrderTotal = 0.0M;
             DisplayHeader("You Purchased", "");
 
             // Display transaction detail
             foreach (KeyValuePair<string, Order> item in catering.OrderHistory)
             {
-                string name = catering.productMenu[item.Key].Name;
-                decimal price = catering.productMenu[item.Key].Price;
-                string type = catering.productMenu[item.Key].Type;
-                decimal orderCost = item.Value.OrderCost;
-                orderTotal += orderCost;
+                string itemName = catering.ProductMenu[item.Key].Name;
+                decimal itemPrice = catering.ProductMenu[item.Key].Price;
+                string itemType = catering.ProductMenu[item.Key].Type;
+                decimal orderLineCost = item.Value.OrderCost;
+                accumOrderTotal += orderLineCost;
 
-                Console.WriteLine($"{item.Key.ToString()} {type} {name} {price.ToString("C")} {orderCost.ToString("C")}");
+                Console.WriteLine($"{item.Key.ToString()} {itemType} {itemName} {itemPrice.ToString("C")} {orderLineCost.ToString("C")}");
             }
-                Console.WriteLine();
 
             // Display Transaction Summary
-            Console.WriteLine($"Total: {orderTotal.ToString("C")}");
+            Console.WriteLine();
+            Console.WriteLine($"Total: {accumOrderTotal.ToString("C")}");
             Console.WriteLine(); Console.WriteLine();
 
-            // Return money to customer and clear account balance
+            // Return money to customer, display return in largest possible money increments.
+            // Then clear account balance
             Console.WriteLine($"Balance to be returned: {catering.Money.CheckBalance()}");
             Console.WriteLine(catering.GiveChange());
-            
+
             Console.WriteLine($"Current balance: {catering.Money.CheckBalance().ToString("C")}");
             Console.WriteLine(); Console.WriteLine();
-
-            catering.UpdateOrderHistory(); //Writes to output file
+            
+            //Merge order history with sales history file.  Also clears session order history
+            catering.UpdateOrderHistory();
         }
     }
 }

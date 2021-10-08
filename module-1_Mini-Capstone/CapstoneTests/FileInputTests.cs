@@ -18,10 +18,10 @@ namespace CapstoneTests
             FileInput fileInput = new FileInput();
 
             //Act
-            fileInput.LoadProductMenuFromFile(catering.productMenu);
+            fileInput.LoadProductMenuFromFile(catering.ProductMenu);
 
             //Assert
-            Assert.IsNotNull(catering.productMenu);
+            Assert.IsNotNull(catering.ProductMenu);
         }
         //If we couldn't test the files, we would change the input and output paths
         //to take in a parameter that we would provide to create a test environment

@@ -19,7 +19,7 @@ namespace CapstoneTests
             catering.ProductMenuBuilder();
 
             //Assert
-            Assert.IsNotNull(catering.productMenu);
+            Assert.IsNotNull(catering.ProductMenu);
         }
 
         [TestMethod]
@@ -48,7 +48,7 @@ namespace CapstoneTests
         {
             // Arrange 
             Catering catering = new Catering();
-            catering.productMenu["T1"] = new CateringItem("test", "T1", "test", 1.00M);
+            catering.ProductMenu["T1"] = new CateringItem("test", "T1", "test", 1.00M);
             catering.Money.AddMoney(100);
             decimal expectedBalance = decimal.Parse(newBalance);
 
@@ -69,12 +69,12 @@ namespace CapstoneTests
         {
             // Arrange 
             Catering catering = new Catering();
-            catering.productMenu["T1"] = new CateringItem("test", "T1", "test", 1.00M);
+            catering.ProductMenu["T1"] = new CateringItem("test", "T1", "test", 1.00M);
             catering.Money.AddMoney(500);
 
             // Act
             catering.PlaceOrder(id, quantityToOrder);
-            int result = catering.productMenu[id].Quantity;
+            int result = catering.ProductMenu[id].Quantity;
 
             // Assert
             Assert.AreEqual(expected, result);
@@ -85,7 +85,7 @@ namespace CapstoneTests
         {
             // Arrange 
             Catering catering = new Catering();
-            catering.productMenu["T1"] = new CateringItem("test", "T1", "test", 1.00M);
+            catering.ProductMenu["T1"] = new CateringItem("test", "T1", "test", 1.00M);
             catering.Money.AddMoney(100);
 
             // Act
@@ -102,7 +102,7 @@ namespace CapstoneTests
         {
             // Arrange 
             Catering catering = new Catering();
-            catering.productMenu["T1"] = new CateringItem("test", "T1", "test", 1.00M);
+            catering.ProductMenu["T1"] = new CateringItem("test", "T1", "test", 1.00M);
             catering.Money.AddMoney(100);
             //TxType is "quantityToOrder + item.name + item.type"
             string testTx = $"10 test T1";

@@ -12,13 +12,14 @@ namespace Capstone.Classes
     {
         // All external data files for this application should live in this directory.
         // You will likely need to create this directory and copy / paste any needed files.
-        private string filePath = @"C:\Catering\CateringSystem.csv";
+        private string csvMenuInputPath = @"C:\Catering\CateringSystem.csv";
+        private string salesReportPath = @"C:\Catering\TotalSales.rpt";
 
         public void LoadProductMenuFromFile(Dictionary<string, CateringItem> productDictionary)
         {
             try
             {
-                using (StreamReader reader = new StreamReader(filePath))
+                using (StreamReader reader = new StreamReader(csvMenuInputPath))
                 {
                     while (!reader.EndOfStream)
                     {
@@ -48,7 +49,7 @@ namespace Capstone.Classes
             }
             catch (IndexOutOfRangeException ex)
             {
-                Console.WriteLine("File is improperly formatted");
+                Console.WriteLine("File entry is not formatted properly");
                 Console.WriteLine(ex.Message);
             }
         }
@@ -89,20 +90,20 @@ namespace Capstone.Classes
         }
 
         /// <summary>
-        /// Reads current TotalSales.rpt and adds values to OrderHistory
+        /// Reads TotalSales.rpt file and merges past sales data with current session of OrderHistory
         /// </summary>
         /// <param name="OrderHistory"></param>
         public void LoadFromTotalSales(Dictionary<string, Order> OrderHistory)
         {
             try
             {
-                using (StreamReader reader = new StreamReader(@"C:\Catering\TotalSales.rpt"))
+                using (StreamReader reader = new StreamReader(salesReportPath))
                 {
                     while (!reader.EndOfStream)
                     {
                         string line = reader.ReadLine();
 
-                        // Parse | seperated line of text
+                        // Parse | seperated line of text.  Stop at first blank line.
                         if (line == "")
                         {
                             break;
@@ -113,15 +114,19 @@ namespace Capstone.Classes
                         int quantity = int.Parse(lineSplit[2]);
                         decimal orderCost = decimal.Parse(lineSplit[3]);
 
-                        // Reformat type & name for screan readability
-                        name = NameExpander(name);
 
-                        if (OrderHistory.ContainsKey(id)) //If product has been purchased this session, add quantity and cost of purchases to current values
+                        // we shouldn't need this.  Name should already be expanded.
+                        // Reformat type & name for screan readability
+                        //  name = NameExpander(name);
+
+                        // If product has been purchased this session, merge current order with order history.
+                        // If product was not purchased this session, just preserve order history.
+                        if (OrderHistory.ContainsKey(id))
                         {
                             OrderHistory[id].Quantity += quantity;
                             OrderHistory[id].OrderCost += orderCost;
                         }
-                        else //If product has not been pruchased session, create new entry using the id as the key and a new order constructed from details provided by read file
+                        else
                         {
                             OrderHistory[id] = new Order(id, name, quantity, orderCost);
                         }

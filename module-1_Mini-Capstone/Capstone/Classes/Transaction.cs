@@ -19,9 +19,10 @@ namespace Capstone.Classes
             TxType = type;
             TransactionAmount = amount;
         }
-        
 
-        public override string ToString() //Sets display of Transaction for output file and hidden menu display method
+
+        //Sets display of Transaction for output file and hidden menu display method
+        public override string ToString() 
         {
             return $"{TimeLog} {TxType} {TransactionAmount.ToString("C")} {UpdatedBalance.ToString("C")}";
         }
