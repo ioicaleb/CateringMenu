@@ -10,7 +10,7 @@ namespace Capstone.Classes
     /// </summary>
     public class UserInterface
     {
-        private Catering catering = new Catering();
+        private Catering catering = new Catering(); //Everything runs through catering
 
         /// <summary>
         /// Displays main menu and takes in and handles user input
@@ -40,7 +40,7 @@ namespace Capstone.Classes
                         catering.FinalizeTransactions();
                         done = true;
                         break;
-                    case "4":
+                    case "4": //Displays Transaction Log in console (DOES NOT APPEAR IN LIST TO USER)
                         foreach (Transaction item in catering.TransactionLog)
                         {
                             Console.WriteLine(item);
@@ -53,6 +53,11 @@ namespace Capstone.Classes
             }
         }
 
+        /// <summary>
+        /// Displays and maintains a header over each menu and displays menu lists
+        /// </summary>
+        /// <param name="header"></param>
+        /// <param name="options"></param>
         public void DisplayHeader(string header, string options)
         {
                 Console.WriteLine("Weyland, Inc.  Catering System");
@@ -104,15 +109,15 @@ namespace Capstone.Classes
                     case "1": //Add Money and create transaction for transaction log
                         AddMoneyToAccount();
                         break;
-                    case "2": //View and select products to purchase
+                    case "2": //View and select products to purchase and process purchase
                         DisplayCateringItems();
                         MakePurchase();
                         break;
-                    case "3": //Complete transaction and return to main menu
+                    case "3": //Complete transaction, output total sales report, and return to main menu
                         CompleteTransaction();
                         ordering = false;
                         break;
-                    case "4":
+                    case "4": //Displays Transaction Log in console (DOES NOT APPEAR IN LIST TO USER)
                         foreach (Transaction item in catering.TransactionLog)
                         {
                             Console.WriteLine(item);
@@ -125,12 +130,15 @@ namespace Capstone.Classes
             }
         }
 
+        /// <summary>
+        /// Gets user input of how much money to add to account and processes the method through Catering
+        /// </summary>
         public void AddMoneyToAccount()
         {
             Console.Write("How much do you want to add (in $): ");
-            if (int.TryParse(Console.ReadLine(), out int money))
+            if (int.TryParse(Console.ReadLine(), out int money)) //Displays message if input is not a whole number
             {
-                // AddMoney returns false if the deposit would exceed maximumlimit.
+                // AddMoney returns false if the deposit would exceed maximum limit ($4,200.00) or if input is negative
                 if (!catering.AddMoneyToAccount(money))
                 {
                     Console.WriteLine($"Deposit amount cannot be negative.");
@@ -146,6 +154,9 @@ namespace Capstone.Classes
             }
         }
 
+        /// <summary>
+        /// Gets user input of item Id and checks it against the product list. Will complete order if item is in stock and account balance has enough money
+        /// </summary>
         public void MakePurchase()
         {
             Console.WriteLine();
@@ -186,6 +197,9 @@ namespace Capstone.Classes
             }
         }
 
+        /// <summary>
+        /// Displays order history and writes order history to output file C:\Catering\TotalSales.rpt
+        /// </summary>
         public void CompleteTransaction()
         {
             decimal orderTotal = 0;
@@ -215,9 +229,7 @@ namespace Capstone.Classes
             Console.WriteLine($"Current balance: {catering.Money.CheckBalance().ToString("C")}");
             Console.WriteLine(); Console.WriteLine();
 
-            catering.UpdateOrderHistory();
+            catering.UpdateOrderHistory(); //Writes to output file
         }
-
-
     }
 }

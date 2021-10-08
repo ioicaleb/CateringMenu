@@ -7,6 +7,10 @@ namespace Capstone.Classes
 {
     public class FileOutput
     {
+        /// <summary>
+        /// Writes Transaction Log to file Log.txt
+        /// </summary>
+        /// <param name="transactions"></param>
         public void WriteToLog(List<Transaction> transactions)
         {
             string outputPath = @"C:\Catering\Log.txt";
@@ -27,6 +31,10 @@ namespace Capstone.Classes
             }
         }
 
+        /// <summary>
+        /// Writes OrderHistory to TotalSales.rpt and removes entry from OrderHistory once written to file
+        /// </summary>
+        /// <param name="OrderHistory"></param>
         public void WriteToTotalSales(Dictionary<string, Order> OrderHistory)
         {
             try

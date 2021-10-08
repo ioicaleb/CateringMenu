@@ -51,6 +51,10 @@ namespace Capstone.Classes
             return false;
         }
 
+        /// <summary>
+        /// Calculates and returns string of proper change for remaining account balance
+        /// </summary>
+        /// <returns></returns>
         public string ReturnMoney()
         {
             int remainingBalance = (int)(AccountBalance * 100);

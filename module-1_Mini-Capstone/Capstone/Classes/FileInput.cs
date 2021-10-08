@@ -74,7 +74,7 @@ namespace Capstone.Classes
             return type;
         }
 
-        // Padd item descriptions to 20 characters for screen formating.
+        // Pad item descriptions to 20 characters for screen formating.
         public string NameExpander(string name)
         {
             if (name.Length < 20)
@@ -88,6 +88,10 @@ namespace Capstone.Classes
             return name;
         }
 
+        /// <summary>
+        /// Reads current TotalSales.rpt and adds values to OrderHistory
+        /// </summary>
+        /// <param name="OrderHistory"></param>
         public void LoadFromTotalSales(Dictionary<string, Order> OrderHistory)
         {
             try
@@ -112,12 +116,12 @@ namespace Capstone.Classes
                         // Reformat type & name for screan readability
                         name = NameExpander(name);
 
-                        if (OrderHistory.ContainsKey(id))
+                        if (OrderHistory.ContainsKey(id)) //If product has been purchased this session, add quantity and cost of purchases to current values
                         {
                             OrderHistory[id].Quantity += quantity;
                             OrderHistory[id].OrderCost += orderCost;
                         }
-                        else
+                        else //If product has not been pruchased session, create new entry using the id as the key and a new order constructed from details provided by read file
                         {
                             OrderHistory[id] = new Order(id, name, quantity, orderCost);
                         }

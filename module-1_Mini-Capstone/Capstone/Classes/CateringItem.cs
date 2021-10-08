@@ -29,7 +29,7 @@ namespace Capstone.Classes
         }
 
 
-        public override string ToString()
+        public override string ToString() //Sets display of CateringItem for DisplayCateringItem method and adds SOLD OUT if remaining quantity is zero
         {
             string details = $"{Id} {Type}   {Name}   {Quantity}   {Price.ToString("C")}";
             if (Quantity == 0)

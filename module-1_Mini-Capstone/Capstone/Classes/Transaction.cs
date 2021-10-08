@@ -21,7 +21,7 @@ namespace Capstone.Classes
         }
         
 
-        public override string ToString()
+        public override string ToString() //Sets display of Transaction for output file and hidden menu display method
         {
             return $"{TimeLog} {TxType} {TransactionAmount.ToString("C")} {UpdatedBalance.ToString("C")}";
         }
