@@ -53,51 +53,51 @@ namespace Capstone.Classes
 
         public string ReturnMoney()
         {
-            int accountBalance = (int)(AccountBalance * 100);
+            int remainingBalance = (int)(AccountBalance * 100);
 
             string changeDue = "Change due: ";
 
-            if (accountBalance >= 2000)
+            if (remainingBalance >= 2000)
             {
-                int bills20s = accountBalance / 2000;
-                accountBalance = accountBalance % 2000;
-                changeDue += $"{bills20s} 20s ";
+                int twentys = remainingBalance / 2000;
+                remainingBalance = remainingBalance % 2000;
+                changeDue += $"{twentys} Twentys ";
             }
-            if (accountBalance >= 1000)
+            if (remainingBalance >= 1000)
             {
-                int bills10s = accountBalance / 1000;
-                accountBalance = accountBalance % 1000;
-                changeDue += $"{bills10s} 10s ";
+                int tens = remainingBalance / 1000;
+                remainingBalance = remainingBalance % 1000;
+                changeDue += $"{tens} Tens ";
             }
-            if (accountBalance >= 500)
+            if (remainingBalance >= 500)
             {
-                int bills5s = accountBalance / 500;
-                accountBalance = accountBalance % 500;
-                changeDue += $"{bills5s} 5s ";
+                int fives = remainingBalance / 500;
+                remainingBalance = remainingBalance % 500;
+                changeDue += $"{fives} Fives ";
             }
-            if (accountBalance >= 100)
+            if (remainingBalance >= 100)
             {
-                int bills1s = accountBalance / 100;
-                accountBalance = accountBalance % 100;
-                changeDue += $"{bills1s} 1s ";
+                int ones = remainingBalance / 100;
+                remainingBalance = remainingBalance % 100;
+                changeDue += $"{ones} Ones ";
             }
-            if (accountBalance >= 25)
+            if (remainingBalance >= 25)
             {
-                int coinsQuarters = accountBalance / 25;
-                accountBalance = accountBalance % 25;
-                changeDue += $"{coinsQuarters} quarters ";
+                int quarters = remainingBalance / 25;
+                remainingBalance = remainingBalance % 25;
+                changeDue += $"{quarters} Quarters ";
             }
-            if (accountBalance >= 10)
+            if (remainingBalance >= 10)
             {
-                int coinsDimes = accountBalance / 10;
-                accountBalance = accountBalance % 10;
-                changeDue += $"{coinsDimes} dimes ";
+                int dimes = remainingBalance / 10;
+                remainingBalance = remainingBalance % 10;
+                changeDue += $"{dimes} Dimes ";
             }
-            if (accountBalance >= 5)
+            if (remainingBalance >= 5)
             {
-                int coinsNickels = accountBalance / 5;
-                accountBalance = accountBalance % 5;
-                changeDue += $"{coinsNickels} nickels";
+                int nickels = remainingBalance / 5;
+                remainingBalance = remainingBalance % 5;
+                changeDue += $"{nickels} Nickels";
             }
             
             return changeDue;

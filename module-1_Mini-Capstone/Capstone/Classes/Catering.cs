@@ -9,25 +9,23 @@ namespace Capstone.Classes
     /// </summary>
     public class Catering
     {
-        private List<CateringItem> items = new List<CateringItem>();
-
-        public Dictionary<string, int> productKey = new Dictionary<string, int>();
+        public Dictionary<string, CateringItem> productMenu = new Dictionary<string, CateringItem>();
 
         public Money Money = new Money();
 
+        // Log of all transactions. Add$, order item, & return$
         public List<Transaction> TransactionLog = new List<Transaction>();
 
-        public Dictionary<string, CateringItem> productDictionary = new Dictionary<string, CateringItem>();
-
+        // Track orders made in a single transaction
         public Dictionary<string, int> OrderLog;
 
         /// <summary>
         ///Reads from file and creates a list of products 
         /// </summary>
-        public void ProductListBuilder()
+        public void ProductMenuBuilder()
         {
             FileInput fileInput = new FileInput();
-            fileInput.FileLoader(items, productKey, productDictionary); //converts list to products
+            fileInput.LoadProductMenuFromFile(productMenu); //converts list to products
 
         }
 
@@ -38,8 +36,8 @@ namespace Capstone.Classes
         }
         public bool PlaceOrder(string input, int quantityToOrder)
         {
-            int index = productKey[input];
-            CateringItem order = items[index];
+            //int index = productKey[input];
+            CateringItem order = productMenu[input];
             if (order.Quantity >= quantityToOrder)
             {
                 decimal cost = quantityToOrder * order.Price;
@@ -47,7 +45,7 @@ namespace Capstone.Classes
                 {
                     Money.RemoveMoney(cost);
                     order.Quantity -= quantityToOrder;
-                    LogTransaction($"{quantityToOrder} {items[index].Name} {items[index].Id}", cost, Money.CheckBalance());
+                    LogTransaction($"{quantityToOrder} {productMenu[input].Name} {productMenu[input].Id}", cost, Money.CheckBalance());
                     if (!OrderLog.ContainsKey(order.Id))
                     {
                         OrderLog[order.Id] = quantityToOrder;
@@ -70,13 +68,14 @@ namespace Capstone.Classes
         /// <param name="balance"></param>
         public void LogTransaction(string type, decimal amount, decimal balance)
         {
+       /*     // Restrict type field to 10 characters in transaction log.
+            if (type.Length > 10)
+            {
+                type = type.Substring(0, 10);
+            } */
             Transaction tx = new Transaction(type, amount, balance);
             TransactionLog.Add(tx);
         }
 
-        public CateringItem[] itemsList
-        {
-            get { return items.ToArray(); }
-        }
     }
 }
