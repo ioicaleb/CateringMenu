@@ -34,18 +34,19 @@ namespace Capstone.Classes
             FileOutput fileOutput = new FileOutput();
             fileOutput.WriteToLog(TransactionLog);
         }
+
         public bool PlaceOrder(string input, int quantityToOrder)
         {
             //int index = productKey[input];
             CateringItem order = productMenu[input];
-            if (order.Quantity >= quantityToOrder)
+            if ((order.Quantity >= quantityToOrder) && quantityToOrder >= 0)
             {
                 decimal cost = quantityToOrder * order.Price;
                 if (cost <= Money.CheckBalance())
                 {
                     Money.RemoveMoney(cost);
                     order.Quantity -= quantityToOrder;
-                    LogTransaction($"{quantityToOrder} {productMenu[input].Name} {productMenu[input].Id}", cost, Money.CheckBalance());
+                    LogTransaction($"{quantityToOrder} {productMenu[input].Name} {productMenu[input].Id}", cost);
                     if (!OrderLog.ContainsKey(order.Id))
                     {
                         OrderLog[order.Id] = quantityToOrder;
@@ -60,22 +61,43 @@ namespace Capstone.Classes
             return false;
         }
 
+        public bool AddMoneyToAccount(int money)
+        {
+            //checks if transaction can be completed, completes transaction, and logs to transaction log
+            if (Money.AddMoney(money))
+            {
+                LogTransaction("ADD MONEY", money);
+                return true;
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Creates and adds a transaction to a list of transactions
         /// </summary>
         /// <param name="type"></param>
         /// <param name="amount"></param>
         /// <param name="balance"></param>
-        public void LogTransaction(string type, decimal amount, decimal balance)
+        public void LogTransaction(string type, decimal amount)
         {
-       /*     // Restrict type field to 10 characters in transaction log.
-            if (type.Length > 10)
-            {
-                type = type.Substring(0, 10);
-            } */
-            Transaction tx = new Transaction(type, amount, balance);
+            /*     // Restrict type field to 10 characters in transaction log.
+                 if (type.Length > 10)
+                 {
+                     type = type.Substring(0, 10);
+                 } */
+            Transaction tx = new Transaction(type, amount);
+            tx.UpdatedBalance = Money.CheckBalance();
             TransactionLog.Add(tx);
         }
 
+        public string GiveChange()
+        {
+            string changeDue = Money.ReturnMoney();
+            decimal changePaidOut = Money.CheckBalance();
+            Money.RemoveMoney(Money.CheckBalance());
+            LogTransaction("GIVE CHANGE", changePaidOut);
+            return changeDue;
+        }
     }
 }

@@ -14,11 +14,10 @@ namespace Capstone.Classes
 
         public decimal UpdatedBalance;
 
-        public Transaction(string type, decimal amount, decimal balance)
+        public Transaction(string type, decimal amount)
         {
             TxType = type;
             TransactionAmount = amount;
-            UpdatedBalance = balance;
         }
         
 

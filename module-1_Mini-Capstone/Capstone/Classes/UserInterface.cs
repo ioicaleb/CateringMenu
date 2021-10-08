@@ -132,13 +132,10 @@ namespace Capstone.Classes
             if (int.TryParse(Console.ReadLine(), out int money))
             {
                 // AddMoney returns false if the deposit would exceed maximumlimit.
-                if (catering.Money.AddMoney(money))
+                if (!catering.AddMoneyToAccount(money))
                 {
-                    catering.LogTransaction("ADD MONEY", money, catering.Money.CheckBalance());
-                }
-                else
-                {
-                    Console.WriteLine($"Deposit exceeds account maximum of {catering.Money.AccountLimit}.");
+                    Console.WriteLine($"Deposit amount cannot be negative.");
+                    Console.WriteLine($"Deposit cannot exceed account maximum of {catering.Money.AccountLimit}.");
                     Console.WriteLine();
                 }
                 Console.WriteLine("Account Balance:" + catering.Money.CheckBalance().ToString("C"));
@@ -174,7 +171,7 @@ namespace Capstone.Classes
                 }
                 else
                 {
-                    Console.WriteLine("Invalid input. Please put whole numbers only");
+                    Console.WriteLine("Invalid input. Please put whole positive numbers only");
                 }
             }
             else
@@ -208,10 +205,8 @@ namespace Capstone.Classes
 
             // Return money to customer and clear account balance
             Console.WriteLine($"Balance to be returned: {catering.Money.CheckBalance()}");
-            Console.WriteLine(catering.Money.ReturnMoney());
-            catering.LogTransaction("GIVE CHANGE", catering.Money.CheckBalance(), 0.00M);
-            catering.Money.RemoveMoney(catering.Money.CheckBalance());
-
+            Console.WriteLine(catering.GiveChange());
+            
             Console.WriteLine($"Current balance: {catering.Money.CheckBalance().ToString("C")}");
             Console.WriteLine(); Console.WriteLine();
 

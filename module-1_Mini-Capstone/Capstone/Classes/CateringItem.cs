@@ -29,7 +29,6 @@ namespace Capstone.Classes
         }
 
 
-
         public override string ToString()
         {
             string details = $"{Id} {Type}   {Name}   {Quantity}   {Price.ToString("C")}";

@@ -13,7 +13,7 @@ namespace Capstone.Classes
         // All external data files for this application should live in this directory.
         // You will likely need to create this directory and copy / paste any needed files.
         private string filePath = @"C:\Catering\CateringSystem.csv";
-
+        
         public void LoadProductMenuFromFile(Dictionary<string, CateringItem> productDictionary)
         {
             try
@@ -23,11 +23,11 @@ namespace Capstone.Classes
                     while (!reader.EndOfStream)
                     {
                         string line = reader.ReadLine();
-                       
+
                         // Parse | seperated line of text
                         string[] lineSplit = line.Split("|");
-                        string type = lineSplit[0]; 
-                        string id   = lineSplit[1];
+                        string type = lineSplit[0];
+                        string id = lineSplit[1];
                         string name = lineSplit[2];
                         decimal price = decimal.Parse(lineSplit[3]);
 
@@ -44,6 +44,11 @@ namespace Capstone.Classes
             catch (IOException ex)
             {
                 Console.WriteLine("Unable to read file");
+                Console.WriteLine(ex.Message);
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine("File is improperly formatted");
                 Console.WriteLine(ex.Message);
             }
         }

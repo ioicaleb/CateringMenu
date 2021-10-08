@@ -28,7 +28,7 @@ namespace Capstone.Classes
         /// <returns></returns>
         public bool AddMoney(int money)
         {
-            if ((AccountBalance + money) <= AccountLimit)
+            if (((AccountBalance + money) <= AccountLimit) && (money >= 0))
             {
                 AccountBalance += money;
                 return true;
