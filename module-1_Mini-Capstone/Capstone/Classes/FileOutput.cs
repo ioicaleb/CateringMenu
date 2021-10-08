@@ -26,5 +26,30 @@ namespace Capstone.Classes
                 Console.WriteLine(ex.Message);
             }
         }
+
+        public void WriteToTotalSales(Dictionary<string, Order> OrderHistory)
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(@"C:\Catering\TotalSales.rpt", false))
+                {
+                    decimal totalSalesCost = 0;
+                    foreach (KeyValuePair<string, Order> order in OrderHistory)
+                    {
+                        totalSalesCost += order.Value.OrderCost;
+                        string orderOutput = $"{order.Key}|{order.Value.Name}|{order.Value.Quantity}|{order.Value.OrderCost}";
+                        writer.WriteLine(orderOutput);
+                        OrderHistory.Remove(order.Key);
+                    }
+                    writer.WriteLine();
+                    writer.WriteLine();
+                    writer.WriteLine($"**TOTAL SALES** {totalSalesCost.ToString("C")}");
+                }
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine("Unable to write file");
+            }
+        }
     }
 }

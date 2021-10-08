@@ -17,27 +17,31 @@ namespace Capstone.Classes
         public List<Transaction> TransactionLog = new List<Transaction>();
 
         // Track orders made in a single transaction
-        public Dictionary<string, int> OrderLog;
+        //public Dictionary<string, int> OrderLog = new Dictionary<string, int>();
+
+        public Dictionary<string, Order> OrderHistory = new Dictionary<string, Order>();
+        
+        private FileInput fileInput = new FileInput();
+
+        private FileOutput fileOutput = new FileOutput();
 
         /// <summary>
         ///Reads from file and creates a list of products 
         /// </summary>
         public void ProductMenuBuilder()
         {
-            FileInput fileInput = new FileInput();
             fileInput.LoadProductMenuFromFile(productMenu); //converts list to products
 
         }
 
         public void FinalizeTransactions()
         {
-            FileOutput fileOutput = new FileOutput();
             fileOutput.WriteToLog(TransactionLog);
         }
 
         public bool PlaceOrder(string input, int quantityToOrder)
         {
-            //int index = productKey[input];
+            
             CateringItem order = productMenu[input];
             if ((order.Quantity >= quantityToOrder) && quantityToOrder >= 0)
             {
@@ -47,13 +51,19 @@ namespace Capstone.Classes
                     Money.RemoveMoney(cost);
                     order.Quantity -= quantityToOrder;
                     LogTransaction($"{quantityToOrder} {productMenu[input].Name} {productMenu[input].Id}", cost);
-                    if (!OrderLog.ContainsKey(order.Id))
+                    
+                    decimal price = productMenu[input].Price;
+                    string name = productMenu[input].Name;
+                    decimal orderCost = price * quantityToOrder;
+
+                    if (OrderHistory.ContainsKey(input))
                     {
-                        OrderLog[order.Id] = quantityToOrder;
+                        OrderHistory[input].Quantity += quantityToOrder;
+                        OrderHistory[input].OrderCost += orderCost;
                     }
                     else
                     {
-                        OrderLog[order.Id] += quantityToOrder;
+                        OrderHistory[input] = new Order(input, name, quantityToOrder, orderCost);
                     }
                     return true;
                 }
@@ -98,6 +108,13 @@ namespace Capstone.Classes
             Money.RemoveMoney(Money.CheckBalance());
             LogTransaction("GIVE CHANGE", changePaidOut);
             return changeDue;
+        }
+
+        public void UpdateOrderHistory()
+        {
+            fileInput.LoadFromTotalSales(OrderHistory);
+            
+            fileOutput.WriteToTotalSales(OrderHistory);
         }
     }
 }

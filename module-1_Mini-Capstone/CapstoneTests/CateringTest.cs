@@ -29,7 +29,6 @@ namespace CapstoneTests
         {
             // Arrange 
             Catering catering = new Catering();
-            catering.OrderLog = new Dictionary<string, int>();
             catering.ProductMenuBuilder();
             catering.Money.AddMoney(500);
 
@@ -50,7 +49,6 @@ namespace CapstoneTests
             // Arrange 
             Catering catering = new Catering();
             catering.productMenu["T1"] = new CateringItem("test", "T1", "test", 1.00M);
-            catering.OrderLog = new Dictionary<string, int>();
             catering.Money.AddMoney(100);
             decimal expectedBalance = decimal.Parse(newBalance);
 
@@ -72,7 +70,6 @@ namespace CapstoneTests
             // Arrange 
             Catering catering = new Catering();
             catering.productMenu["T1"] = new CateringItem("test", "T1", "test", 1.00M);
-            catering.OrderLog = new Dictionary<string, int>();
             catering.Money.AddMoney(500);
 
             // Act
@@ -89,7 +86,6 @@ namespace CapstoneTests
             // Arrange 
             Catering catering = new Catering();
             catering.productMenu["T1"] = new CateringItem("test", "T1", "test", 1.00M);
-            catering.OrderLog = new Dictionary<string, int>();
             catering.Money.AddMoney(100);
 
             // Act
@@ -97,8 +93,8 @@ namespace CapstoneTests
 
 
             // Assert
-            Assert.IsTrue(catering.OrderLog.ContainsKey("T1"));
-            Assert.AreEqual(10, catering.OrderLog["T1"]);
+            Assert.IsTrue(catering.OrderHistory.ContainsKey("T1"));
+            Assert.AreEqual(10, catering.OrderHistory["T1"].Quantity);
         }
 
         [TestMethod]
@@ -107,7 +103,6 @@ namespace CapstoneTests
             // Arrange 
             Catering catering = new Catering();
             catering.productMenu["T1"] = new CateringItem("test", "T1", "test", 1.00M);
-            catering.OrderLog = new Dictionary<string, int>();
             catering.Money.AddMoney(100);
             //TxType is "quantityToOrder + item.name + item.type"
             string testTx = $"10 test T1";

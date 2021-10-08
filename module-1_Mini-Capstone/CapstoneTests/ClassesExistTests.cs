@@ -18,6 +18,7 @@ namespace CapstoneTests
             FileInput fileInput = new FileInput();
             FileOutput fileOutput = new FileOutput();
             Money money = new Money();
+            Order order = new Order("T1", "test", 1, 0.00M);
             Transaction transaction = new Transaction("type", 0.00M);
             UserInterface userInterface = new UserInterface();
 
@@ -29,6 +30,7 @@ namespace CapstoneTests
             Assert.IsNotNull(fileInput);
             Assert.IsNotNull(fileOutput);
             Assert.IsNotNull(money);
+            Assert.IsNotNull(order);
             Assert.IsNotNull(transaction);
             Assert.IsNotNull(userInterface);
         }

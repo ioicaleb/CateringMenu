@@ -92,7 +92,6 @@ namespace Capstone.Classes
         public void DisplayOrderMenu()
         {
             bool ordering = true;
-            catering.OrderLog = new Dictionary<string, int>();
             while (ordering)
             {
                 DisplayHeader("Order Menu", "1) Add Money\n2) Select Products\n3) Complete Transaction");
@@ -162,10 +161,17 @@ namespace Capstone.Classes
                 Console.Write($"How many? (Available: {quantityAvailable}): ");
                 if (int.TryParse(Console.ReadLine(), out int quantityToOrder))
                 {
-                    catering.PlaceOrder(input, quantityToOrder);
+                    bool orderPlaced = catering.PlaceOrder(input, quantityToOrder);
                     Console.WriteLine();
-                    string orderString = $"Order placed for {quantityToOrder} {name} Total Cost: {(price * quantityToOrder).ToString("C")}";
-                    Console.WriteLine(orderString);
+                    if (orderPlaced)
+                    {
+                        string orderString = $"Order placed for {quantityToOrder} {name} Total Cost: {(price * quantityToOrder).ToString("C")}";
+                        Console.WriteLine(orderString);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Order not placed. Check account balance and available quantity");
+                    }
                     Console.WriteLine("Account Balance:" + catering.Money.CheckBalance().ToString("C"));
                     Console.WriteLine();
                 }
@@ -186,16 +192,15 @@ namespace Capstone.Classes
             DisplayHeader("You Purchased", "");
 
             // Display transaction detail
-            foreach (KeyValuePair<string, int> item in catering.OrderLog)
+            foreach (KeyValuePair<string, Order> item in catering.OrderHistory)
             {
                 string name = catering.productMenu[item.Key].Name;
                 decimal price = catering.productMenu[item.Key].Price;
                 string type = catering.productMenu[item.Key].Type;
+                decimal orderCost = item.Value.OrderCost;
+                orderTotal += orderCost;
 
-                decimal lineTotal = price * item.Value;
-                orderTotal += lineTotal;
-
-                Console.WriteLine($"{item.Value} {type} {name} {price.ToString("C")} {lineTotal.ToString("C")}");
+                Console.WriteLine($"{item.Key.ToString()} {type} {name} {price.ToString("C")} {orderCost.ToString("C")}");
             }
                 Console.WriteLine();
 
@@ -210,6 +215,7 @@ namespace Capstone.Classes
             Console.WriteLine($"Current balance: {catering.Money.CheckBalance().ToString("C")}");
             Console.WriteLine(); Console.WriteLine();
 
+            catering.UpdateOrderHistory();
         }
 
 
