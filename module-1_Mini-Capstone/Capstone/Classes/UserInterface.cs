@@ -48,6 +48,7 @@ namespace Capstone.Classes
                         break;
                     default: //Returns to main menu if input is not recognized
                         Console.WriteLine("Invalid input. Please try again.");
+                        Console.WriteLine();
                         break;
                 }
             }
@@ -125,6 +126,7 @@ namespace Capstone.Classes
                         break;
                     default: //Returns to order menu if input is not recognized
                         Console.WriteLine("Invalid input. Please try again.");
+                        Console.WriteLine();
                         break;
                 }
             }
@@ -151,6 +153,7 @@ namespace Capstone.Classes
             else
             {
                 Console.WriteLine("Invalid Input. Please input whole dollars only.");
+                Console.WriteLine();
             }
         }
 
@@ -188,11 +191,13 @@ namespace Capstone.Classes
                 else
                 {
                     Console.WriteLine("Invalid input. Please put whole positive numbers only");
+                    Console.WriteLine();
                 }
             }
             else
             {
                 Console.WriteLine("Invalid ID. Please try again");
+                Console.WriteLine();
             }
         }
 
